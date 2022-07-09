@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(cpp_pubsub)
+project(cpp_pubsub)                     # Hier wird der Name des Packages definiert
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,10 +7,12 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)       # diese Zeile muss manuell hinzugefuegt werden, damit gebuildet werden kann.
-find_package(std_msgs REQUIRED)
+find_package(rclcpp REQUIRED)           # diese Zeile muss manuell hinzugefuegt werden, damit gebuildet werden kann.
+find_package(std_msgs REQUIRED)         # Beispiel einer Einbindung eines Packages, welches ROS2-Knoten benoetigt wird.
 
-add_executable(talker src/talker.cpp)
+add_executable(talker src/talker.cpp)   # Hier werden die Executables, also die ausfuehrbaren ROS2-Knoten definiert. 
+                                        # Links steht der frei waehlbare Name eines Executables, rechts die Datei, die 
+                                        # bei Aufruf des Executables ausgefuehrt werden soll.
 
 # JR: Folgende Zeilen wurden bei Erstellung des Packages mit der --node-name talker 
 # Option mit hinzugefuegt. Sie sind aber unnoetig:
@@ -18,11 +20,15 @@ target_include_directories(talker PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 target_compile_features(talker PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-ament_target_dependencies(talker rclcpp std_msgs)
 # JR: Ende
 
-install(TARGETS talker
-  DESTINATION lib/${PROJECT_NAME})
+# JR: Folgende Zeile wurde bei Erstellung des Packages mit den Optionen "--node-name talker --dependencies std_msgs" hinzugefuegt.
+ament_target_dependencies(talker rclcpp std_msgs) # Hier werden die fuer das Executable benoetigten Packages
+                                                  # eingebunden
+
+
+install(TARGETS talker                  # Dieser Befehl ist essentiell, um die Executables finden zu koennen.
+  DESTINATION lib/${PROJECT_NAME})      
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
