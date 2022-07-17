@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot name="MeinRoboter" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--Diese Datei dient als Anleitung, wie ein Robotermodell grundsätzlich auszusehen hat.
+  Ein Robotermodell besteht hauptsächlich aus zwei unterschiedlichen Elementen:
+  - link: Links beschreiben ein Objekt vor allem in seiner Form, Farbe und Masse(ntraegheit)
+          mehr dazu unter: http://wiki.ros.org/urdf/XML/link
+  - joint: Joints bzw. Gelenke beschreiben die kinematische bzw. lokale Beziehung zwischen zwei
+           Links.
+  Tipps:
+  - in VSCode die URDF-Extension installieren. Sie bietet eine Autovervollstaendigung an.
+  -->
+  <link name="base_link"> <!--Es ist Konvention, dass der Hauptlink eines Roboters "base_link" heisst. 
+                              Alle anderen Links eines Roboters beziehen sich indirekt oder direkt auf
+                              den "base_link". Fuer Gewoehnlich befindet sich der "base_link" im kinema-
+                              tischen Zentrum und auf der unteren Seite der Bodengruppe eines (mobilen) 
+                              Roboters.-->
+    <visual>              <!--(optional) Alle Unterelemente von <visual> beschreiben die sichtbaren 
+                              Eigenschaften eines Objekts wie Form und Farbe.-->
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/> <!--Ausgehend vom base_link - Ursprung bzw. orgigin wird hier
+                                                  ein zylindrischer Koerper definiert. der Origin befindet 
+                                                  sich, sofern nicht anders in "origin" angegeben, im Schwerpunkt
+                                                  des Koerpers.-->
+      </geometry>
+      <material name="rot">   <!--Es muss unbedingt ein Materialname vergeben werden, falls das Element <material>
+                                  verwendet wird.-->
+        <color rgba="1.0 0.0 0.0 1.0"/> <!--rgba steht fuer red green blue alpha. Die Werte sollen einen Wert zwischen 
+                                            0.0 und 1.0 haben. alpha steht fuer die Transparenz. 1.0 bedeutet, dass man
+                                            nicht durch das Material schauen kann.-->
+      </material>
+    </visual>
+  </link>
+
+  <!--Es ist Konvention, einen Joint nach dem Namen des child links zu benennen. Jeder joint muss unbedingt 
+      und einzigartig benannt werden. Ausserdem muss unbedingt der Typ eines Joints angegeben werden. Folgende
+      Optionen stehen dabei zur Verfuegung:
+      - fixed: Die relative Position zwischen dem parent link und dem child link zueinander sind konstant. Dieser
+               Typ wird immer dann verwendet, wenn Teile fest miteinander verbunden, also z.B. verschraubt oder
+               verschweisst sind.
+      - revolute: Der child link ist zu einer festgelegten Achse und gegebenenfalls in einem begrenzten Winkel-
+                  bereich rotierbar. Dieser Typ findet vor allem bei Greifarmen oder Servo-Antrieben Verwendung.
+      - continuous: Der child link ist gegenueber dem parent link bezueglich einer festgelegten Achse unbegrenzt 
+                    drehbar. Gerade bei den Raedern eines mobilen Roboters wird dieser Typ verwendet.
+      - prismatic: Der child link laesst sich zu einer festgelegten Achse hin translatorisch verschieben. Kann 
+                   z.B: bei 3D-Druckern verwendet werden.
+      - floating: TODO: vervollstaendigen
+      - floating: TODO: vervollstaendigen
+      -->
+  <joint name="base_footprint_joint" type="fixed">  
+    <!-- mit dem Origin wird der grundsaetzliche translatorische und rotatorische Bezug zwischen parent link und
+         child link definiert. rpy steht fuer roll, pitch und yaw und die Winkel werden im Bogenmass (rad) ange-
+         geben. Die translatorischen Abstaende (xyz, bezogen auf die Pose des parent links) werden in der Einheit 
+         [m] angegeben. Die Werte lesen sich immer von parent link hin zum child link. -->
+    <origin xyz="0.0 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    <parent link="base_link"/>  <!--hier wird die Verknuepfung zum Start-Link hergestellt.-->
+    <child link="base_footprint"/>    <!--hier wird die Verknuepfung zum Ziel-Link hergestellt.-->
+  </joint>
+
+  <link name="base_footprint"/>   <!--Ein Link kann auch leer sein. Das ist vor allem dann der Fall, wenn 
+                                      z.B. bei der Position eines Kamera-Fokusses nur die Transform relevant
+                                      ist.-->
+
+  <joint name="box_auf_zylinder_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.8" rpy="0.0 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="box_auf_zylinder_link"/>
+  </joint>
+
+  <link name="box_auf_zylinder_link">
+    <visual name="">
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.5 0.5 0.5"/>
+      </geometry>
+      <material name="blau">
+        <color rgba="0.0 1.0 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+</robot>

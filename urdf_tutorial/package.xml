@@ -2,12 +2,20 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>urdf_tutorial</name>
-  <version>0.0.0</version>
+  <version>1.0.0</version>
   <description>Dieses Paket gibt eine Einfuehrung in den Aufbau und der Visualisierung eines Robotermodells</description>
-  <maintainer email="regnerju69567@th-nuernberg.de">Julian Regner</maintainer>
-  <license>TODO: License declaration</license>
+  <maintainer email="julian.regner@gmx.de">Julian Regner</maintainer>
+  <license>BSD</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!--Packages, die manuell eingefuegt werden muessen, damit alle Nodes in den Launchfiles korrekt gestartet werden koennen:-->
+  <depend>robot_state_publisher</depend>
+  <depend>rviz</depend>
+
+  <!-- <depend>xacro</depend> -->
+  <!-- <depend>joint_state_publisher</depend> -->
+  <!-- <depend>joint_state_publisher_gui</depend> -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
