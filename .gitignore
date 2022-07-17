@@ -1,0 +1,4 @@
+# Diese Datei dient dazu, Ordner und Dateien bei der Versionierung auszunehmen. Dadurch
+# bleibt das Repository sauber von unnötigen Dateien und Ordnern, die meist automatisch
+# erzeugt wurden.
+.vscode
